@@ -1,5 +1,6 @@
 package org.fit.iuh;
 
+import decorator.*;
 import statepattern.CanceledState;
 import statepattern.OrderContext;
 import strategypattern.ConsumptionTax;
@@ -33,5 +34,18 @@ public class Main {
         System.out.println("\nChanging tax for Smartphone...");
         phone.setTaxStrategy(new LuxuryTax());
         phone.printPriceInfo();
+        System.out.println("=== Credit Card Payment with Processing Fee ===");
+        Payment creditCardPayment = new CreditCardPayment();
+        Payment creditCardWithFee = new ProcessingFeeDecorator(creditCardPayment, 2.5);
+        creditCardWithFee.pay(10000);
+
+        System.out.println("\n=== PayPal Payment with Discount ===");
+        Payment paypalPayment = new PayPalPayment();
+        Payment paypalWithDiscount = new DiscountDecorator(paypalPayment, 5);
+        paypalWithDiscount.pay(10000);
+
+        System.out.println("\n=== Credit Card Payment with Processing Fee and Discount ===");
+        Payment creditCardWithFeeAndDiscount = new DiscountDecorator(creditCardWithFee, 10);
+        creditCardWithFeeAndDiscount.pay(100);
     }
 }
